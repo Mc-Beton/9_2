@@ -6,10 +6,14 @@ import csv
 from collections import OrderedDict
 import requests
 import json
+from decimal import Decimal
+from decimal import getcontext
 
+getcontext().prec = 2
 result=[]
 data_cur=[]
 cod=[]
+x = 0
 response = requests.get("http://api.nbp.pl/api/exchangerates/tables/C?format=json")
 data_json = response.json()
 data = data_json[0]
@@ -42,8 +46,10 @@ def exchange():
             if cur == i.get('code'):
                 bi = i.get('bid')
         bi_num = float(bi)
-        result.append(amo_num/bi_num)
-
+        result.clear()
+        x = Decimal(amo_num/bi_num)
+        output = round(x,2)
+        result.append(output)
         return render_template("calcu_res.html", result=result)
 
 
