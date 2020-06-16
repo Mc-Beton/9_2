@@ -49,7 +49,6 @@ XDR
 ```
 Later type in how much would You like to buy of the choosen currency and the click "**Calculate**"
 Here we go. How much Polish LN's you need to pay to get that much amount of money, of your desired currency.
-Here You can "fake send" a message to me.
 
 ## But why?
 
