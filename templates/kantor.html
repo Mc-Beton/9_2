@@ -1,0 +1,21 @@
+{% extends "index.html" %}
+{% block content %}
+        <p>Choose a currency You would like to buy:</p>
+
+        <form method="POST" action="">
+            <label for="currency">Choose a currency:</label>
+            <select name="currency">
+                {% for item in items %}
+                <option>{{item}}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <p>How much would you like to buy?</p>
+            <input type="text" id="amount" name="amount"><br><br>
+            <input type="submit" value="Calculate">
+            
+        </form>
+
+        <p>Click the "Calculate" button and you shall receive how much PLN you'll get</p>
+
+{% endblock %}

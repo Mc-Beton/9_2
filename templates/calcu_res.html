@@ -1,0 +1,15 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="body">
+    <div class="main_body">
+        <div class="main_title">
+            <h2 class="main_title">Obliczona wartość</h2><br>
+        </div>
+        <div class="main_value" >
+            {% for line in result %}
+            {{ line }}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
