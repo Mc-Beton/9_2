@@ -1,26 +1,23 @@
-from flask import Flask 
-from flask import render_template
-from flask import request
-from flask import redirect
+from flask import Flask, render_template, request, redirect
 import csv
 from collections import OrderedDict
 import requests
 import json
-from decimal import Decimal
-from decimal import getcontext
+from decimal import Decimal, getcontext
+
+
+app = Flask(__name__)
 
 getcontext().prec = 2
 result=[]
 data_cur=[]
 cod=[]
-x = 0
+
 response = requests.get("http://api.nbp.pl/api/exchangerates/tables/C?format=json")
 data_json = response.json()
 data = data_json[0]
 for i in data.get('rates'):
     data_cur.append(i)
-
-app = Flask(__name__)
 
 for i in data_cur:
     j=i.get('code')
@@ -30,26 +27,26 @@ for i in data_cur:
 def exchange():
     if request.method =='GET':
         items=cod
-        lista = "<select>"
-        for item in items:
-            lista = lista + f"<option>{item}</option>"
-        lista += "</select>"
         return render_template("kantor.html", items=items)
 
-
     if request.method == 'POST':
+
         data = request.form
         cur = data.get('currency')
         amo = data.get('amount')
         amo_num = float(amo)
+
         for i in data_cur:
             if cur == i.get('code'):
                 bi = i.get('bid')
+
         bi_num = float(bi)
         result.clear()
-        x = Decimal(amo_num/bi_num)
+
+        x = Decimal(amo_num*bi_num)
         output = round(x,2)
         result.append(output)
+
         return render_template("calcu_res.html", result=result)
 
 
