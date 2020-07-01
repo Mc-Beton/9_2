@@ -6,6 +6,7 @@ import json
 from decimal import Decimal, getcontext
 
 
+
 app = Flask(__name__)
 
 getcontext().prec = 2
@@ -16,8 +17,18 @@ cod=[]
 response = requests.get("http://api.nbp.pl/api/exchangerates/tables/C?format=json")
 data_json = response.json()
 data = data_json[0]
-for i in data.get('rates'):
-    data_cur.append(i)
+
+with open('kantor.csv', 'w', newline='') as csvfile:
+    fieldnames = ['currency', 'code', 'bid', 'ask']
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    writer.writeheader()
+    for i in data.get('rates'):
+        writer.writerow(i)
+
+with open('kantor.csv', newline='') as csvfile:
+    data_j = csv.DictReader(csvfile)
+    for i in data_j:
+        data_cur.append(dict(OrderedDict(i)))
 
 for i in data_cur:
     j=i.get('code')
@@ -25,6 +36,7 @@ for i in data_cur:
 
 @app.route("/kantor/", methods=['GET', 'POST'])
 def exchange():
+    
     if request.method =='GET':
         items=cod
         return render_template("kantor.html", items=items)
@@ -35,7 +47,7 @@ def exchange():
         cur = data.get('currency')
         amo = data.get('amount')
         amo_num = float(amo)
-
+        print(amo_num)
         for i in data_cur:
             if cur == i.get('code'):
                 bi = i.get('bid')
