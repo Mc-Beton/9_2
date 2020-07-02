@@ -38,29 +38,31 @@ for i in data_cur:
 def exchange():
     
     if request.method =='GET':
-        items=cod
-        return render_template("kantor.html", items=items)
+       
+        return render_template("kantor.html", sro=cod)
 
     if request.method == 'POST':
+        try:
+            data = request.form
+            cur = data.get('currency')
+            amo = data.get('amount')
+            amo_num = float(amo)
+        
+            for i in data_cur:
+                if cur == i.get('code'):
+                    bi = i.get('bid')
 
-        data = request.form
-        cur = data.get('currency')
-        amo = data.get('amount')
-        amo_num = float(amo)
-        print(amo_num)
-        for i in data_cur:
-            if cur == i.get('code'):
-                bi = i.get('bid')
+            bi_num = float(bi)
+            result.clear()
 
-        bi_num = float(bi)
-        result.clear()
+            x = Decimal(amo_num*bi_num)
+            output = round(x,2)
+            result.append(output)
 
-        x = Decimal(amo_num*bi_num)
-        output = round(x,2)
-        result.append(output)
+            return render_template("calcu_res.html", result=result)
 
-        return render_template("calcu_res.html", result=result)
-
+        except:
+            return render_template("kantor.html", sro=cod)
 
 
 if __name__ == '__main__':

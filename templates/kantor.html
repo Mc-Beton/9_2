@@ -1,11 +1,11 @@
 {% extends "index.html" %}
 {% block content %}
         <p>Choose a currency You would like to buy:</p>
-
+        
         <form method="POST" action="">
             <label for="currency">Choose a currency:</label>
             <select name="currency">
-                {% for item in items %}
+                {% for item in sro %}
                 <option>{{item}}</option>
                 {% endfor %}
             </select>
